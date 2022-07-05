@@ -23,6 +23,7 @@ async function run () {
     try{
         await client.connect();
         const volunteerCollection = client.db('volunteer').collection('member');
+        const volunteerRegisterCollection = client.db('volunteer').collection('registerVolunteer');
 
         //GET VOLUNTEER
         app.get('/volunteer', async (req,res) =>{
@@ -47,6 +48,21 @@ async function run () {
             const result = await volunteerCollection.insertOne(newVolunteer);
             res.send(result);
         });
+
+        // VOLUNTEER REGISTER LIST POST
+        app.post('/volunteerinfo', async (req, res)=> {
+            const info = req.body;
+            const volunteerInfo = await volunteerRegisterCollection.insertOne(info);
+            res.send(volunteerInfo);
+        });
+
+        //VOLUNTEER REGISTER LIST GET
+        app.get('/volunteerinfo', async (req, res) => {
+            const query = {};
+            const cursor = volunteerRegisterCollection.find(query);
+            const volunteerRegister = await cursor.toArray();
+            res.send(volunteerRegister);
+        });
         
     }
 
@@ -54,11 +70,6 @@ async function run () {
 
 };
 run().catch(console.dir);
-
-
-
-
-
 
 
 
