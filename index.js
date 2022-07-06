@@ -63,6 +63,15 @@ async function run () {
             const volunteerRegister = await cursor.toArray();
             res.send(volunteerRegister);
         });
+
+
+        //VOLUNTEER PERSON REGISTER LIST GET
+      app.delete('/volunteerinfo/:id', async (req, res) =>{
+        const id = req.params.id;
+        const query = {_id:ObjectId(id)};
+        const reaminVolunterRegister = await volunteerRegisterCollection.deleteOne(query);
+        res.send(reaminVolunterRegister);
+      });
         
     }
 
